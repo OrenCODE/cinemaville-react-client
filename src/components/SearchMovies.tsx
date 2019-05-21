@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {MovieObj} from "../App";
+// import {MovieObj} from "../App";
 import axios from 'axios';
 
 export interface ISearchMovies {
@@ -31,7 +31,7 @@ class SearchMovies extends Component <ISearchMovies> {
         }
 
         axios.get(`http://localhost:4000/movies/search/${searchText}`)
-            .then(res => searchMovie(res.data))
+            .then(res => searchMovie(res.data)) // IMPORTANT LINE//
             .catch(function (error) {
                 return alert(`this movie doesn't exist, feel free to add it`)
             });

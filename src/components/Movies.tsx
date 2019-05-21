@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import {MovieObj} from "../App";
+import {MovieObject} from './Home';
 import MovieItem from './MovieItem';
 
 export interface IMovies {
-    movies: MovieObj[]
+    movies: MovieObject[]
     deleteMovie: (id: number) => void
 }
 
