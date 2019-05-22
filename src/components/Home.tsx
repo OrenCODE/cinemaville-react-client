@@ -23,7 +23,7 @@ class Home extends Component <any, IHomeState> {
         }
     }
 
-    componentDidMount(): void {
+    componentDidMount() {
         axios.get('http://localhost:4000/movies/')
             .then(res => this.setState({
                 movies: res.data
@@ -41,27 +41,61 @@ class Home extends Component <any, IHomeState> {
     modalSubmit = (event: any) => {
         event.preventDefault();
 
-        // const title = event.target.elements.title.value;
-        // // const genre = event.target.elements.genre.value;
-        //
-        // axios.post('http://localhost:4000/movies/', {
-        //     title,
-        //     // genre
-        // });
+        const title = event.target.elements.title.value;
+        const genre = event.target.elements.genre.value;
+
+        axios.post('http://localhost:4000/movies/', {
+            title,
+            genre
+        })
+            .then((res) => {
+                const id = res.data.id;
+                const newMovie = {
+                    id,
+                    title,
+                    genre,
+                };
+                this.setState({movies: this.state.movies.concat(newMovie)})
+            })
     };
 
+    searchMovie = (title: MovieObject) => {
+        console.log(title);
+        this.setState({
+            movies: []
+        });
+
+        this.setState({
+            movies: [title]
+        })
+    };
+
+    showAllMovies = () => {
+        this.setState({
+            movies: []
+        });
+
+        axios.get('http://localhost:4000/movies/')
+            .then(res => this.setState({
+                movies: res.data
+            }))
+    };
 
     deleteMovie = (id: number) => {
         const {movies} = this.state;
 
-        let moviesArray = movies.filter(movie => {
+        const moviesAfterDelete = movies.filter(movie => {
             return movie.id !== id;
         });
 
         axios.delete(`http://localhost:4000/movies/${id}`)
             .then(res => this.setState({
-                movies: moviesArray
+                movies: moviesAfterDelete
             }))
+    };
+
+    editMovie = (id: number) => {
+      console.log(id);
     };
 
     render() {
@@ -69,9 +103,11 @@ class Home extends Component <any, IHomeState> {
         const {movies} = this.state;
         return (
             <div className="App">
-                <MoviesNavbar showModal={this.showModal}/>
-                <Movies movies={movies} deleteMovie={this.deleteMovie}/>
+                <MoviesNavbar searchMovie={this.searchMovie} showModal={this.showModal}
+                              showAllMovies={this.showAllMovies}/>
+                <Movies movies={movies} deleteMovie={this.deleteMovie} editMovie={this.editMovie}/>
                 <MovieModal modalStatus={this.state.show} closeModal={this.closeModal} modalSubmit={this.modalSubmit}/>
+
             </div>
         );
     }

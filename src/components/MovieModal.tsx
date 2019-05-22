@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Button, Form, Modal} from 'react-bootstrap';
+import {Button, Form, FormControl ,Modal} from 'react-bootstrap';
 
 export interface IMovieModal {
     modalStatus: boolean
@@ -19,8 +19,8 @@ class MovieModal extends Component <IMovieModal> {
                 </Modal.Header>
                 <Form onSubmit={modalSubmit}>
                     <Modal.Body>
-                        <input name={"title"} type={"text"} placeholder={"Movie title"}/>
-                        <input name={"genre"} type={"text"} placeholder={"Movie genre"}/>
+                        <FormControl name={"title"} type={"text"} placeholder={"Title"}/>
+                        <FormControl name={"genre"} type={"text"} placeholder={"Genre"}/>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button type={"submit"} variant="primary" onClick={closeModal}>
