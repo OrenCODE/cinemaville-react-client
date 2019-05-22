@@ -5,13 +5,13 @@ import MoviesNavbar from './MoviesNavbar';
 import MovieModal from './MovieModal';
 import EditMovieModal from './EditMovieModal';
 
-
 export type MovieObject = Record<string, any>
 
 export interface IHomeState {
     movies: MovieObject[]
     showAdd: boolean
     showEdit: boolean
+    preEditFields: MovieObject[]
 }
 
 class Home extends Component <any, IHomeState> {
@@ -22,7 +22,8 @@ class Home extends Component <any, IHomeState> {
         this.state = {
             movies: [],
             showAdd: false,
-            showEdit: false
+            showEdit: false,
+            preEditFields: []
         }
     }
 
@@ -112,21 +113,23 @@ class Home extends Component <any, IHomeState> {
     };
 
     editMovie = (movie: MovieObject) => {
-        console.log(movie);
+        this.setState({
+            preEditFields: [movie]
+        });
         this.showEditModal()
     };
 
     render() {
 
-        const {movies} = this.state;
+        const {movies, showAdd, showEdit , preEditFields} = this.state;
         return (
             <div className="App">
                 <MoviesNavbar searchMovie={this.searchMovie} showModal={this.showModal}
                               showAllMovies={this.showAllMovies}/>
                 <Movies movies={movies} deleteMovie={this.deleteMovie} editMovie={this.editMovie}/>
-                <MovieModal modalStatus={this.state.showAdd} closeModal={this.closeModal} modalSubmit={this.addMovie}/>
-                <EditMovieModal modalStatus={this.state.showEdit} closeModal={this.closeEditModal}
-                                modalSubmit={this.saveEditedMovie}/>
+                <MovieModal modalStatus={showAdd} closeModal={this.closeModal} modalSubmit={this.addMovie}/>
+                <EditMovieModal modalStatus={showEdit} closeModal={this.closeEditModal}
+                                modalSubmit={this.saveEditedMovie} preEditFields={preEditFields}/>
             </div>
         );
     }
