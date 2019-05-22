@@ -5,7 +5,7 @@ import MovieItem from './MovieItem';
 export interface IMovies {
     movies: MovieObject[]
     deleteMovie: (id: number) => void
-    editMovie: (id: number) => void
+    editMovie: (arg: MovieObject) => void
 }
 
 class Movies extends Component <IMovies> {

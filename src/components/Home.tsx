@@ -3,13 +3,15 @@ import axios from 'axios';
 import Movies from './Movies';
 import MoviesNavbar from './MoviesNavbar';
 import MovieModal from './MovieModal';
+import EditMovieModal from './EditMovieModal';
 
 
 export type MovieObject = Record<string, any>
 
 export interface IHomeState {
     movies: MovieObject[]
-    show: boolean
+    showAdd: boolean
+    showEdit: boolean
 }
 
 class Home extends Component <any, IHomeState> {
@@ -19,7 +21,8 @@ class Home extends Component <any, IHomeState> {
 
         this.state = {
             movies: [],
-            show: false
+            showAdd: false,
+            showEdit: false
         }
     }
 
@@ -31,14 +34,23 @@ class Home extends Component <any, IHomeState> {
     }
 
     showModal = () => {
-        this.setState({show: true})
+        this.setState({showAdd: true})
     };
 
     closeModal = () => {
-        this.setState({show: false})
+        this.setState({showAdd: false})
     };
 
-    modalSubmit = (event: any) => {
+    showEditModal = () => {
+        this.setState({showEdit: true})
+    };
+
+    closeEditModal = () => {
+        this.setState({showEdit: false})
+    };
+
+
+    addMovie = (event: any) => {
         event.preventDefault();
 
         const title = event.target.elements.title.value;
@@ -57,6 +69,11 @@ class Home extends Component <any, IHomeState> {
                 };
                 this.setState({movies: this.state.movies.concat(newMovie)})
             })
+    };
+
+
+    saveEditedMovie = (event: any) => {
+        event.preventDefault();
     };
 
     searchMovie = (title: MovieObject) => {
@@ -94,8 +111,9 @@ class Home extends Component <any, IHomeState> {
             }))
     };
 
-    editMovie = (id: number) => {
-      console.log(id);
+    editMovie = (movie: MovieObject) => {
+        console.log(movie);
+        this.showEditModal()
     };
 
     render() {
@@ -106,8 +124,9 @@ class Home extends Component <any, IHomeState> {
                 <MoviesNavbar searchMovie={this.searchMovie} showModal={this.showModal}
                               showAllMovies={this.showAllMovies}/>
                 <Movies movies={movies} deleteMovie={this.deleteMovie} editMovie={this.editMovie}/>
-                <MovieModal modalStatus={this.state.show} closeModal={this.closeModal} modalSubmit={this.modalSubmit}/>
-
+                <MovieModal modalStatus={this.state.showAdd} closeModal={this.closeModal} modalSubmit={this.addMovie}/>
+                <EditMovieModal modalStatus={this.state.showEdit} closeModal={this.closeEditModal}
+                                modalSubmit={this.saveEditedMovie}/>
             </div>
         );
     }

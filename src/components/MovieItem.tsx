@@ -4,7 +4,7 @@ import {MovieObject} from "./Home";
 export interface IMovieItem {
     movie: MovieObject
     deleteMovie: (id: number) => void
-    editMovie: (id: number) => void
+    editMovie: (arg: MovieObject) => void
 }
 
 class MovieItem extends Component <IMovieItem> {
@@ -18,7 +18,7 @@ class MovieItem extends Component <IMovieItem> {
                 <div>{movie.title}</div>
                 <div>{movie.genre}</div>
                 <button onClick={() => deleteMovie(movie.id)}>del</button>
-                <button onClick={() => editMovie(movie.id)}>Edit</button>
+                <button onClick={() => editMovie(movie)}>Edit</button>
             </div>
         );
     }
