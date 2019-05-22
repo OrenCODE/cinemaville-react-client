@@ -11,7 +11,7 @@ class MovieItem extends Component <IMovieItem> {
 
     render() {
 
-        const {movie,deleteMovie, editMovie} = this.props;
+        const {movie, deleteMovie, editMovie} = this.props;
 
         return (
             <div key={movie.id} className={"list-group-item"}>

@@ -4,20 +4,20 @@ import {Button, Form, FormControl ,Modal} from 'react-bootstrap';
 export interface IMovieModal {
     modalStatus: boolean
     closeModal: () => void
-    modalSubmit: (event: any) => void
+    addMovie: (event: any) => void
 }
 
 class MovieModal extends Component <IMovieModal> {
 
     render() {
 
-        const {modalStatus, closeModal, modalSubmit} = this.props;
+        const {modalStatus, closeModal, addMovie} = this.props;
         return (
             <Modal show={modalStatus} onHide={closeModal}>
                 <Modal.Header closeButton>
                     <Modal.Title>Add New Movie</Modal.Title>
                 </Modal.Header>
-                <Form onSubmit={modalSubmit}>
+                <Form onSubmit={addMovie}>
                     <Modal.Body>
                         <FormControl name={"title"} type={"text"} placeholder={"Title"}/>
                         <FormControl name={"genre"} type={"text"} placeholder={"Genre"}/>

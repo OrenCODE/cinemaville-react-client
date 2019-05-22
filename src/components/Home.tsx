@@ -119,17 +119,29 @@ class Home extends Component <any, IHomeState> {
         this.showEditModal()
     };
 
+    onEdit = (event: any) =>{
+        const editedTitle = event.target.elements.title.value;
+        const editedGenre = event.targen.elements.genre.value;
+
+        this.setState({
+            preEditFields: [editedTitle]
+        });
+
+        console.log(editedTitle, editedGenre)
+
+    };
+
     render() {
 
-        const {movies, showAdd, showEdit , preEditFields} = this.state;
+        const {movies, showAdd, showEdit, preEditFields} = this.state;
         return (
             <div className="App">
-                <MoviesNavbar searchMovie={this.searchMovie} showModal={this.showModal}
-                              showAllMovies={this.showAllMovies}/>
+                <MoviesNavbar showAllMovies={this.showAllMovies} showModal={this.showModal}
+                              searchMovie={this.searchMovie}/>
                 <Movies movies={movies} deleteMovie={this.deleteMovie} editMovie={this.editMovie}/>
-                <MovieModal modalStatus={showAdd} closeModal={this.closeModal} modalSubmit={this.addMovie}/>
+                <MovieModal modalStatus={showAdd} closeModal={this.closeModal} addMovie={this.addMovie}/>
                 <EditMovieModal modalStatus={showEdit} closeModal={this.closeEditModal}
-                                modalSubmit={this.saveEditedMovie} preEditFields={preEditFields}/>
+                                modalSubmit={this.saveEditedMovie} preEditFields={preEditFields} onEdit={this.onEdit}/>
             </div>
         );
     }

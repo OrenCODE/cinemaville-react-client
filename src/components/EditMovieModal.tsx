@@ -7,12 +7,15 @@ export interface IEditMovieModal {
     closeModal: () => void
     modalSubmit: (event: any) => void
     preEditFields: MovieObject[]
+    onEdit: (event: any) => void
 }
 
 class EditMovieModal extends Component <IEditMovieModal> {
 
+    state = {};
+
     render() {
-        const {modalStatus, closeModal, modalSubmit, preEditFields} = this.props;
+        const {modalStatus, closeModal, modalSubmit, preEditFields, onEdit} = this.props;
 
         return (
             <Modal show={modalStatus} onHide={closeModal}>
@@ -24,9 +27,9 @@ class EditMovieModal extends Component <IEditMovieModal> {
                         {preEditFields.map((movieField) => (
                             <div key={movieField.id}>
                                 <FormControl name={"title"} type={"text"} placeholder={"Movie title"}
-                                             value={movieField.title}/>
+                                             value={movieField.title} onChange={() => onEdit}/>
                                 <FormControl name={"genre"} type={"text"} placeholder={"Movie genre"}
-                                             value={movieField.genre}/>
+                                             value={movieField.genre} onChange={() => onEdit}/>
                             </div>
                         ))}
                     </Modal.Body>

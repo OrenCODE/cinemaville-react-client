@@ -4,8 +4,8 @@ import axios from 'axios';
 import {MovieObject} from "./Home";
 
 export interface IMoviesNavbar {
-    showModal: () => void
     showAllMovies: (event: any) => void
+    showModal: () => void
     searchMovie: (title: MovieObject) => void
 }
 
@@ -45,7 +45,7 @@ class MoviesNavbar extends Component <IMoviesNavbar> {
 
     render() {
 
-        const {showModal, showAllMovies} = this.props;
+        const {showAllMovies, showModal} = this.props;
         return (
             <React.Fragment>
                 <Navbar bg="dark" variant="dark">
