@@ -5,7 +5,11 @@ import MoviesNavbar from './MoviesNavbar';
 import MovieModal from './MovieModal';
 import EditMovieModal from './EditMovieModal';
 
-export type MovieObject = Record<string, any>
+export interface MovieObject {
+    id: number
+    title: string
+    genre: string
+}
 
 export interface IHomeState {
     movies: MovieObject[]
@@ -50,14 +54,24 @@ class Home extends Component <any, IHomeState> {
         this.setState({showEdit: false})
     };
 
+    showAllMovies = () => {
+        this.setState({
+            movies: []
+        });
+
+        axios.get('http://localhost:4000/movies/')
+            .then(res => this.setState({
+                movies: res.data
+            }))
+    };
 
     addMovie = (event: any) => {
         event.preventDefault();
-
+        const {movies} = this.state;
         const title = event.target.elements.title.value;
         const genre = event.target.elements.genre.value;
 
-        axios.post('http://localhost:4000/movies/', {
+        axios.post(`http://localhost:4000/movies/`, {
             title,
             genre
         })
@@ -68,13 +82,8 @@ class Home extends Component <any, IHomeState> {
                     title,
                     genre,
                 };
-                this.setState({movies: this.state.movies.concat(newMovie)})
+                this.setState({movies: movies.concat(newMovie)})
             })
-    };
-
-
-    saveEditedMovie = (event: any) => {
-        event.preventDefault();
     };
 
     searchMovie = (title: MovieObject) => {
@@ -86,17 +95,6 @@ class Home extends Component <any, IHomeState> {
         this.setState({
             movies: [title]
         })
-    };
-
-    showAllMovies = () => {
-        this.setState({
-            movies: []
-        });
-
-        axios.get('http://localhost:4000/movies/')
-            .then(res => this.setState({
-                movies: res.data
-            }))
     };
 
     deleteMovie = (id: number) => {
@@ -119,17 +117,37 @@ class Home extends Component <any, IHomeState> {
         this.showEditModal()
     };
 
-    onEdit = (event: any) =>{
-        const editedTitle = event.target.elements.title.value;
-        const editedGenre = event.targen.elements.genre.value;
+    saveEditedMovie = (event: any) => {
+        event.preventDefault();
 
-        this.setState({
-            preEditFields: [editedTitle]
-        });
+        const {movies} = this.state;
+        const id = this.state.preEditFields[0].id;
+        const title = event.target.elements.title.value;
+        const genre = event.target.elements.genre.value;
 
-        console.log(editedTitle, editedGenre)
-
+        axios.put(`http://localhost:4000/movies/${id}`, {
+            title,
+            genre
+        })
+            .then((res) => {
+                axios.get('http://localhost:4000/movies/')
+                    .then(res => this.setState({
+                        movies: res.data
+                    }))
+            })
     };
+
+    // onEdit = (event: any) =>{
+    //     const editedTitle = event.target.elements.title.value;
+    //     const editedGenre = event.targen.elements.genre.value;
+    //
+    //     this.setState({
+    //         preEditFields: [editedTitle]
+    //     });
+    //
+    //     console.log(editedTitle, editedGenre)
+    //
+    // };
 
     render() {
 
@@ -141,7 +159,7 @@ class Home extends Component <any, IHomeState> {
                 <Movies movies={movies} deleteMovie={this.deleteMovie} editMovie={this.editMovie}/>
                 <MovieModal modalStatus={showAdd} closeModal={this.closeModal} addMovie={this.addMovie}/>
                 <EditMovieModal modalStatus={showEdit} closeModal={this.closeEditModal}
-                                modalSubmit={this.saveEditedMovie} preEditFields={preEditFields} onEdit={this.onEdit}/>
+                                saveEditedMovie={this.saveEditedMovie} preEditFields={preEditFields}/>
             </div>
         );
     }
